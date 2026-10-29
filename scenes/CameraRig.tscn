@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/camera_rig.gd" id="1_rig"]
+
+[node name="CameraRig" type="Node3D" node_paths=PackedStringArray("camera", "yaw_pivot", "pitch_pivot")]
+script = ExtResource("1_rig")
+camera = NodePath("Yaw/Pitch/Camera3D")
+yaw_pivot = NodePath("Yaw")
+pitch_pivot = NodePath("Yaw/Pitch")
+
+[node name="Yaw" type="Node3D" parent="."]
+
+[node name="Pitch" type="Node3D" parent="Yaw"]
+
+[node name="Camera3D" type="Camera3D" parent="Yaw/Pitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+current = true
+fov = 35.0
+far = 500.0
