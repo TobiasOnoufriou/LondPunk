@@ -5,7 +5,7 @@ extends Node3D
 
 
 func _ready() -> void:
-    # Bakes at runtime so the navmesh always matches the level geometry.
-    # Once the layout settles, bake in the editor and remove this.
-    if nav_region:
-        nav_region.bake_navigation_mesh(false)
+	# Bakes at runtime so the navmesh always matches the level geometry.
+	# Once the layout settles, bake in the editor and remove this.
+	if nav_region:
+		nav_region.bake_navigation_mesh(false)
