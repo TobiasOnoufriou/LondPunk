@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatusEffect" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/status_effect.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"guarded"
+display_name = "Guarded"
+duration_turns = 1
+damage_taken_multiplier = 0.5

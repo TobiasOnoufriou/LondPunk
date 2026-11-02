@@ -36,7 +36,7 @@ extends Node3D
 @export var smoothing: float = 10.0
 
 @export_group("Click")
-@export_flags_3d_physics var click_collision_mask: int = 1
+@export_flags_3d_physics var click_collision_mask: int = 1 | 4
 @export var click_ray_length: float = 1000.0
 
 ## True while the rig is tracking [member follow_target]. Manual panning clears it.
@@ -170,6 +170,10 @@ func _try_ground_click(screen_position: Vector2) -> void:
 		origin, origin + direction * click_ray_length, click_collision_mask)
 	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
 	if hit.is_empty():
+		return
+	var collider: Object = hit["collider"]
+	if collider is Combatant:
+		EventBus.combatant_clicked.emit(collider)
 		return
 	var hit_position: Vector3 = hit["position"]
 	EventBus.ground_clicked.emit(hit_position)

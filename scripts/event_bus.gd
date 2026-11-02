@@ -11,3 +11,85 @@ signal ground_clicked(world_position: Vector3)
 ## Requests that the active camera centre on and follow [param target].
 @warning_ignore("unused_signal")
 signal camera_focus_requested(target: Node3D)
+
+## Emitted when the player clicks a combat unit in the world.
+@warning_ignore("unused_signal")
+signal combatant_clicked(combatant: Combatant)
+
+
+# --- Combat: state broadcasts (CombatManager / Combatant -> anyone) ---
+
+## Emitted once when a fight begins, with every participating unit.
+@warning_ignore("unused_signal")
+signal combat_started(combatants: Array[Combatant])
+
+## Emitted when one side has been wiped out.
+@warning_ignore("unused_signal")
+signal combat_ended(party_won: bool)
+
+## Emitted at the start of each round, before the first turn.
+@warning_ignore("unused_signal")
+signal round_started(round_number: int)
+
+## Emitted whenever the initiative order is rebuilt.
+@warning_ignore("unused_signal")
+signal turn_order_changed(order: Array[Combatant])
+
+## Emitted when [param combatant] begins its turn (AP already refilled).
+@warning_ignore("unused_signal")
+signal turn_started(combatant: Combatant)
+
+## Emitted when [param combatant]'s turn is over.
+@warning_ignore("unused_signal")
+signal turn_ended(combatant: Combatant)
+
+## Emitted when a unit's action points change.
+@warning_ignore("unused_signal")
+signal ap_changed(combatant: Combatant, current: int, maximum: int)
+
+## Emitted when a unit's hit points change.
+@warning_ignore("unused_signal")
+signal hp_changed(combatant: Combatant, current: int, maximum: int)
+
+## Emitted when a unit loses [param amount] hit points.
+@warning_ignore("unused_signal")
+signal combatant_damaged(combatant: Combatant, amount: int)
+
+## Emitted when a unit is reduced to zero hit points.
+@warning_ignore("unused_signal")
+signal combatant_died(combatant: Combatant)
+
+## Emitted when a unit gains or loses a status effect.
+@warning_ignore("unused_signal")
+signal status_changed(combatant: Combatant)
+
+## Emitted when an ability starts resolving. Input should wait for [signal action_resolved].
+@warning_ignore("unused_signal")
+signal ability_used(user: Combatant, ability: Ability, target: AbilityTarget)
+
+## Emitted when the ability started by [signal ability_used] has finished.
+@warning_ignore("unused_signal")
+signal action_resolved(user: Combatant)
+
+## Emitted when the active unit's targeting ability changes. [param ability] may be null.
+@warning_ignore("unused_signal")
+signal ability_armed(user: Combatant, ability: Ability)
+
+## A human-readable line for the combat log.
+@warning_ignore("unused_signal")
+signal combat_log_message(text: String)
+
+
+# --- Combat: player requests (UI -> combat) ---
+
+## The player picked an ability for the active unit.
+@warning_ignore("unused_signal")
+signal ability_selected(ability: Ability)
+
+## The player backed out of the current targeting mode.
+@warning_ignore("unused_signal")
+signal ability_cancelled
+
+## The player wants to end the active unit's turn.
+@warning_ignore("unused_signal")
+signal end_turn_requested

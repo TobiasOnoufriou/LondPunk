@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DamageAbility" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/damage_ability.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"attack"
+display_name = "Attack"
+description = "Melee strike. Scales with Attack Power."
+ap_cost = 2
+max_range = 2.0
+target_mode = 1
+base_damage = 4
+scaling_stat = 0
+damage_type = &"physical"

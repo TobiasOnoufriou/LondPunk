@@ -1,0 +1,165 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/combat_hud.gd" id="1_hud"]
+
+[node name="CombatHUD" type="CanvasLayer" node_paths=PackedStringArray("round_label", "turn_order_bar", "party_list", "bottom_panel", "active_name_label", "ap_label", "ability_bar", "end_turn_button", "log_label", "result_panel", "result_label", "restart_button")]
+script = ExtResource("1_hud")
+round_label = NodePath("Root/TopBar/HBox/RoundLabel")
+turn_order_bar = NodePath("Root/TopBar/HBox/TurnOrderBar")
+party_list = NodePath("Root/PartyPanel/VBox/PartyList")
+bottom_panel = NodePath("Root/BottomPanel")
+active_name_label = NodePath("Root/BottomPanel/VBox/ActiveNameLabel")
+ap_label = NodePath("Root/BottomPanel/VBox/APLabel")
+ability_bar = NodePath("Root/BottomPanel/VBox/Row/AbilityBar")
+end_turn_button = NodePath("Root/BottomPanel/VBox/Row/EndTurnButton")
+log_label = NodePath("Root/LogPanel/Log")
+result_panel = NodePath("Root/ResultPanel")
+result_label = NodePath("Root/ResultPanel/VBox/ResultLabel")
+restart_button = NodePath("Root/ResultPanel/VBox/RestartButton")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="Root/TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="RoundLabel" type="Label" parent="Root/TopBar/HBox"]
+layout_mode = 2
+text = "Round 1"
+
+[node name="TurnOrderBar" type="HBoxContainer" parent="Root/TopBar/HBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="PartyPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 56.0
+offset_right = 248.0
+offset_bottom = 96.0
+
+[node name="VBox" type="VBoxContainer" parent="Root/PartyPanel"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Root/PartyPanel/VBox"]
+layout_mode = 2
+text = "Party"
+
+[node name="PartyList" type="VBoxContainer" parent="Root/PartyPanel/VBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LogPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -388.0
+offset_top = -228.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Log" type="RichTextLabel" parent="Root/LogPanel"]
+layout_mode = 2
+scroll_following = true
+theme_override_font_sizes/normal_font_size = 13
+
+[node name="BottomPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -120.0
+offset_right = 280.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Root/BottomPanel"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ActiveNameLabel" type="Label" parent="Root/BottomPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Unit"
+
+[node name="APLabel" type="Label" parent="Root/BottomPanel/VBox"]
+layout_mode = 2
+text = "AP"
+
+[node name="Row" type="HBoxContainer" parent="Root/BottomPanel/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="AbilityBar" type="HBoxContainer" parent="Root/BottomPanel/VBox/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="EndTurnButton" type="Button" parent="Root/BottomPanel/VBox/Row"]
+layout_mode = 2
+text = "End Turn (Space)"
+
+[node name="Hint" type="Label" parent="Root/BottomPanel/VBox"]
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Left click: target  ·  Right click / Esc: cancel  ·  1-4: abilities  ·  Space: end turn"
+
+[node name="ResultPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -70.0
+offset_right = 160.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/ResultPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResultLabel" type="Label" parent="Root/ResultPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "VICTORY"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="Root/ResultPanel/VBox"]
+layout_mode = 2
+text = "Restart"

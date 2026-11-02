@@ -1,0 +1,174 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/combat_test_level.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://scenes/combat/Combatant.tscn" id="2_combatant"]
+[ext_resource type="PackedScene" path="res://scenes/CameraRig.tscn" id="3_rig"]
+[ext_resource type="Script" path="res://scripts/combat/combat_manager.gd" id="4_manager"]
+[ext_resource type="Script" path="res://scripts/combat/player_turn_controller.gd" id="5_player_ctrl"]
+[ext_resource type="Script" path="res://scripts/combat/ai_turn_controller.gd" id="6_ai_ctrl"]
+[ext_resource type="PackedScene" path="res://scenes/combat/MovePreview.tscn" id="7_preview"]
+[ext_resource type="Script" path="res://scripts/combat/damage_popup_spawner.gd" id="8_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/combat/DamagePopup.tscn" id="9_popup"]
+[ext_resource type="PackedScene" path="res://scenes/combat/CombatHUD.tscn" id="10_hud"]
+[ext_resource type="Resource" path="res://data/combatants/party_rook.tres" id="11_rook"]
+[ext_resource type="Resource" path="res://data/combatants/party_wisp.tres" id="12_wisp"]
+[ext_resource type="Resource" path="res://data/combatants/party_ash.tres" id="13_ash"]
+[ext_resource type="Resource" path="res://data/combatants/party_jinx.tres" id="14_jinx"]
+[ext_resource type="Resource" path="res://data/combatants/test_thug.tres" id="15_thug"]
+[ext_resource type="Resource" path="res://data/combatants/test_drone.tres" id="16_drone"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.05, 0.06, 0.12, 1)
+sky_horizon_color = Color(0.35, 0.2, 0.4, 1)
+ground_bottom_color = Color(0.02, 0.02, 0.03, 1)
+ground_horizon_color = Color(0.35, 0.2, 0.4, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.25, 0.18, 0.35, 1)
+fog_density = 0.008
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_main"]
+geometry_parsed_geometry_type = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.18, 0.19, 0.22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(30, 1, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
+albedo_color = Color(0.45, 0.35, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_crate"]
+material = SubResource("StandardMaterial3D_crate")
+size = Vector3(2, 2, 2)
+
+[node name="CombatTestLevel" type="Node3D" node_paths=PackedStringArray("nav_region", "combat_manager")]
+script = ExtResource("1_level")
+nav_region = NodePath("NavigationRegion3D")
+combat_manager = NodePath("CombatManager")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.104826026, 0.61305696, -0.7830757, -0.94108987, 0.19333145, 0.2773767, 0.3214092, 0.76602006, 0.5566953, 0, 10, 0)
+light_color = Color(0.8455062, 0.8023055, 1, 1)
+shadow_enabled = true
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_main")
+
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Floor"]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="Crate1" type="StaticBody3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Crate1"]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Crate1"]
+mesh = SubResource("BoxMesh_crate")
+
+[node name="Crate2" type="StaticBody3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Crate2"]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Crate2"]
+mesh = SubResource("BoxMesh_crate")
+
+[node name="Crate3" type="StaticBody3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Crate3"]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Crate3"]
+mesh = SubResource("BoxMesh_crate")
+
+[node name="Party" type="Node3D" parent="."]
+
+[node name="Rook" parent="Party" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, -3)
+stats = ExtResource("11_rook")
+
+[node name="Wisp" parent="Party" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, -1)
+stats = ExtResource("12_wisp")
+
+[node name="Ash" parent="Party" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, 1)
+stats = ExtResource("13_ash")
+
+[node name="Jinx" parent="Party" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -7, 0, 3)
+stats = ExtResource("14_jinx")
+
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="ThugA" parent="Enemies" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7, 0, -2)
+stats = ExtResource("15_thug")
+faction = 1
+display_name_override = "Thug A"
+
+[node name="ThugB" parent="Enemies" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 7, 0, 2)
+stats = ExtResource("15_thug")
+faction = 1
+display_name_override = "Thug B"
+
+[node name="Drone" parent="Enemies" instance=ExtResource("2_combatant")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10, 0, 0)
+stats = ExtResource("16_drone")
+faction = 1
+
+[node name="CombatManager" type="Node" parent="." node_paths=PackedStringArray("party_root", "enemy_root", "player_controller", "ai_controller")]
+script = ExtResource("4_manager")
+party_root = NodePath("../Party")
+enemy_root = NodePath("../Enemies")
+player_controller = NodePath("PlayerTurnController")
+ai_controller = NodePath("AITurnController")
+
+[node name="PlayerTurnController" type="Node" parent="CombatManager" node_paths=PackedStringArray("combat_manager")]
+script = ExtResource("5_player_ctrl")
+combat_manager = NodePath("..")
+
+[node name="AITurnController" type="Node" parent="CombatManager" node_paths=PackedStringArray("combat_manager")]
+script = ExtResource("6_ai_ctrl")
+combat_manager = NodePath("..")
+
+[node name="CameraRig" parent="." instance=ExtResource("3_rig")]
+
+[node name="MovePreview" parent="." instance=ExtResource("7_preview")]
+
+[node name="DamagePopupSpawner" type="Node3D" parent="."]
+script = ExtResource("8_spawner")
+popup_scene = ExtResource("9_popup")
+
+[node name="CombatHUD" parent="." instance=ExtResource("10_hud")]

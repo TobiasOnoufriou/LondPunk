@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ApplyStatusAbility" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/apply_status_ability.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/status/guarded.tres" id="2_status"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"defend"
+display_name = "Defend"
+description = "Brace yourself: take half damage until the start of your next turn."
+ap_cost = 1
+target_mode = 0
+status = ExtResource("2_status")

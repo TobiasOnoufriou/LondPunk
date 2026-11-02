@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/move_preview.gd" id="1_preview"]
+
+[node name="MovePreview" type="Node3D" node_paths=PackedStringArray("path_mesh", "cost_label")]
+script = ExtResource("1_preview")
+path_mesh = NodePath("PathMesh")
+cost_label = NodePath("CostLabel")
+
+[node name="PathMesh" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+
+[node name="CostLabel" type="Label3D" parent="."]
+pixel_size = 0.004
+billboard = 1
+no_depth_test = true
+font_size = 40
+outline_size = 10
+text = "0 AP"

@@ -28,7 +28,8 @@ res/
 ├── scenes/       # All .tscn scene files
 ├── scripts/      # All .gd logic files
 ├── assets/       # Sprites, audio, fonts (sub-divided by type)
-└── levels/       # Tilemaps and level layout scenes
+├── levels/       # Tilemaps and level layout scenes
+└── data/         # .tres data resources (abilities, status effects, combatant stats)
 
 # Important Rules for Claude
 - Do NOT use `get_node()` with long hardcoded paths like `../../Player/Sprite2D`. Use `@export` node references or signals.

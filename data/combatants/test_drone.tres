@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CombatStats" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/combat_stats.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/ability.gd" id="2_ability"]
+[ext_resource type="Resource" path="res://data/abilities/move.tres" id="3_move"]
+[ext_resource type="Resource" path="res://data/abilities/technobolt.tres" id="6_technobolt"]
+[ext_resource type="Resource" path="res://data/abilities/attack.tres" id="4_attack"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Drone"
+color = Color(0.7, 0.7, 0.75, 1)
+max_hp = 14
+max_ap = 6
+initiative = 12
+attack_power = 1
+tech_power = 4
+defense = 0
+abilities = Array[ExtResource("2_ability")]([ExtResource("3_move"), ExtResource("6_technobolt"), ExtResource("4_attack")])

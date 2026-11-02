@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CombatStats" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/combat_stats.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/combat/abilities/ability.gd" id="2_ability"]
+[ext_resource type="Resource" path="res://data/abilities/move.tres" id="3_move"]
+[ext_resource type="Resource" path="res://data/abilities/attack.tres" id="4_attack"]
+[ext_resource type="Resource" path="res://data/abilities/defend.tres" id="5_defend"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Thug"
+color = Color(0.55, 0.2, 0.6, 1)
+max_hp = 22
+max_ap = 6
+initiative = 9
+attack_power = 4
+tech_power = 0
+defense = 2
+abilities = Array[ExtResource("2_ability")]([ExtResource("3_move"), ExtResource("4_attack"), ExtResource("5_defend")])

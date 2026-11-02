@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MoveAbility" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/move_ability.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"move"
+display_name = "Move"
+description = "Walk to a point. Costs 1 AP per 2m; too-far destinations are cut short."
+ap_cost = 1
+target_mode = 3
+meters_per_ap = 2.0

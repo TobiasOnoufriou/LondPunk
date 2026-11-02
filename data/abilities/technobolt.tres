@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DamageAbility" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/abilities/damage_ability.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"technobolt"
+display_name = "Technobolt"
+description = "Ranged bolt of crackling tech. Scales with Tech Power and ignores half of the target's defense."
+ap_cost = 3
+max_range = 10.0
+target_mode = 1
+base_damage = 5
+scaling_stat = 1
+defense_penetration = 0.5
+damage_type = &"tech"
+windup_time = 0.45
