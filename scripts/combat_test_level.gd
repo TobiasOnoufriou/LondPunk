@@ -6,6 +6,7 @@ extends Node3D
 
 
 func _ready() -> void:
+    EventBus.combat_result_acknowledged.connect(_on_combat_result_acknowledged)
     # Bakes at runtime so the navmesh always matches the arena geometry.
     if nav_region:
         nav_region.bake_navigation_mesh(false)
@@ -13,3 +14,7 @@ func _ready() -> void:
     await get_tree().physics_frame
     await get_tree().physics_frame
     combat_manager.start_combat()
+
+
+func _on_combat_result_acknowledged(_party_won: bool) -> void:
+    get_tree().reload_current_scene()

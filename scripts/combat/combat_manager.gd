@@ -30,8 +30,16 @@ func _ready() -> void:
 
 
 ## Collects the units under [member party_root] and [member enemy_root] and starts the fight.
+## Can be called again for a new fight once the previous one has ended.
 func start_combat() -> void:
+    if is_running:
+        return
     combatants.clear()
+    turn_order.clear()
+    active_combatant = null
+    round_number = 0
+    busy = false
+    _fallen.clear()
     for root: Node in [party_root, enemy_root]:
         for child: Node in root.get_children():
             if child is Combatant:

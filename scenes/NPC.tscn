@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/npc.gd" id="1_npc"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="2_interactable"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor"]
+albedo_color = Color(1, 0.6, 0.15, 1)
+emission_enabled = true
+emission = Color(1, 0.6, 0.15, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+material = SubResource("StandardMaterial3D_visor")
+size = Vector3(0.5, 0.12, 0.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_click"]
+radius = 0.5
+height = 2.0
+
+[node name="NPC" type="Node3D" node_paths=PackedStringArray("interactable", "body_mesh", "name_label")]
+script = ExtResource("1_npc")
+interactable = NodePath("Interactable")
+body_mesh = NodePath("Visual/Body")
+name_label = NodePath("NameLabel")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_body")
+
+[node name="Visor" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.35)
+mesh = SubResource("BoxMesh_visor")
+
+[node name="NameLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+pixel_size = 0.004
+billboard = 1
+font_size = 40
+outline_size = 10
+text = "Stranger"
+
+[node name="Interactable" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_interactable")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_click")

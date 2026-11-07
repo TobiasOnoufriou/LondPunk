@@ -4,6 +4,17 @@
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/CameraRig.tscn" id="3_rig"]
 [ext_resource type="PackedScene" path="res://scenes/MoveMarker.tscn" id="4_marker"]
+[ext_resource type="PackedScene" path="res://scenes/combat/CombatSystem.tscn" id="5_combat"]
+[ext_resource type="PackedScene" path="res://scenes/NPC.tscn" id="6_npc"]
+[ext_resource type="PackedScene" path="res://scenes/combat/CombatEncounter.tscn" id="7_encounter"]
+[ext_resource type="Script" uid="uid://7nsobq5sie45" path="res://scripts/combat/encounter_spawn_point.gd" id="8_spawn"]
+[ext_resource type="Resource" path="res://data/dialogue/bouncer.dialogue" id="9_dialogue"]
+[ext_resource type="Resource" path="res://data/combatants/npc_bouncer.tres" id="10_bouncer"]
+[ext_resource type="Resource" path="res://data/combatants/test_thug.tres" id="11_thug"]
+[ext_resource type="Resource" path="res://data/combatants/party_rook.tres" id="12_rook"]
+[ext_resource type="Resource" path="res://data/combatants/party_wisp.tres" id="13_wisp"]
+[ext_resource type="Resource" path="res://data/combatants/party_ash.tres" id="14_ash"]
+[ext_resource type="Resource" path="res://data/combatants/party_jinx.tres" id="15_jinx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.05, 0.06, 0.12, 1)
@@ -132,3 +143,45 @@ mesh = SubResource("BoxMesh_wall")
 follow_target = NodePath("../Player")
 
 [node name="MoveMarker" parent="." unique_id=502789164 instance=ExtResource("4_marker")]
+
+[node name="CombatSystem" parent="." instance=ExtResource("5_combat")]
+
+[node name="Bouncer" parent="." node_paths=PackedStringArray("encounter") instance=ExtResource("6_npc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+display_name = "Bouncer"
+dialogue = ExtResource("9_dialogue")
+combat_stats = ExtResource("10_bouncer")
+encounter = NodePath("../BouncerEncounter")
+body_color = Color(0.35, 0.3, 0.3, 1)
+
+[node name="BouncerEncounter" parent="." node_paths=PackedStringArray("combat_manager", "npc_combatants", "player") instance=ExtResource("7_encounter")]
+combat_manager = NodePath("../CombatSystem/CombatManager")
+npc_combatants = [NodePath("../Bouncer")]
+player = NodePath("../Player")
+
+[node name="Rook" type="Marker3D" parent="BouncerEncounter"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 0, 2)
+script = ExtResource("8_spawn")
+stats = ExtResource("12_rook")
+
+[node name="Wisp" type="Marker3D" parent="BouncerEncounter"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1, 0, 2)
+script = ExtResource("8_spawn")
+stats = ExtResource("13_wisp")
+
+[node name="Ash" type="Marker3D" parent="BouncerEncounter"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3, 0, 2)
+script = ExtResource("8_spawn")
+stats = ExtResource("14_ash")
+
+[node name="Jinx" type="Marker3D" parent="BouncerEncounter"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5, 0, 2)
+script = ExtResource("8_spawn")
+stats = ExtResource("15_jinx")
+
+[node name="BouncersMate" type="Marker3D" parent="BouncerEncounter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 9.5)
+script = ExtResource("8_spawn")
+stats = ExtResource("11_thug")
+faction = 1
+display_name_override = "Bouncer's Mate"

@@ -11,6 +11,7 @@
 - **Nodes over Inheritance**: Prefer composition with Node scenes (e.g., `HitboxComponent`, `HealthComponent`) rather than deep class inheritance.
 - **Signals for Decoupling**: UI must never directly call Player/Enemy nodes; use global EventBus singletons (`res://scripts/event_bus.gd`).
 - **Autoloads**: Keep global singletons strictly limited to: `EventBus`, `SoundManager`, `SaveManager`.
+  - Addon-provided exception: `DialogueManager` (required by `addons/dialogue_manager`).
 
 # Coding Standards (GDScript / C#)
 - **Indentation**: 4 spaces (no tabs).

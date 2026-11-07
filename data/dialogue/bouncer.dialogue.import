@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://vflyn4ydqy4t"
+path="res://.godot/imported/bouncer.dialogue-454747829cfc3cc4ee4d0a9ea2e99379.tres"
+
+[deps]
+
+source_file="res://data/dialogue/bouncer.dialogue"
+dest_files=["res://.godot/imported/bouncer.dialogue-454747829cfc3cc4ee4d0a9ea2e99379.tres"]
+
+[params]
+
+defaults=true

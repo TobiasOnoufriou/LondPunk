@@ -16,6 +16,21 @@ signal camera_focus_requested(target: Node3D)
 @warning_ignore("unused_signal")
 signal combatant_clicked(combatant: Combatant)
 
+## Emitted when the player clicks something they can interact with (NPC, door...).
+@warning_ignore("unused_signal")
+signal interactable_clicked(interactable: Interactable)
+
+
+# --- Dialogue ---
+
+## Emitted when a conversation with [param speaker] opens. Exploration input should pause.
+@warning_ignore("unused_signal")
+signal conversation_started(speaker: Node3D)
+
+## Emitted when the conversation with [param speaker] closes.
+@warning_ignore("unused_signal")
+signal conversation_ended(speaker: Node3D)
+
 
 # --- Combat: state broadcasts (CombatManager / Combatant -> anyone) ---
 
@@ -93,3 +108,7 @@ signal ability_cancelled
 ## The player wants to end the active unit's turn.
 @warning_ignore("unused_signal")
 signal end_turn_requested
+
+## The player dismissed the victory/defeat screen. Encounters clean up on this.
+@warning_ignore("unused_signal")
+signal combat_result_acknowledged(party_won: bool)

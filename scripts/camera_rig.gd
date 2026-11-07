@@ -37,6 +37,8 @@ extends Node3D
 
 @export_group("Click")
 @export_flags_3d_physics var click_collision_mask: int = 1 | 4
+## Layers checked for [Interactable] areas, which win over whatever is behind them.
+@export_flags_3d_physics var interact_collision_mask: int = 8
 @export var click_ray_length: float = 1000.0
 
 ## True while the rig is tracking [member follow_target]. Manual panning clears it.
@@ -166,9 +168,24 @@ func _follow_point() -> Vector3:
 func _try_ground_click(screen_position: Vector2) -> void:
 	var origin: Vector3 = camera.project_ray_origin(screen_position)
 	var direction: Vector3 = camera.project_ray_normal(screen_position)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		origin, origin + direction * click_ray_length, click_collision_mask)
-	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+	var hit: Dictionary = space.intersect_ray(query)
+
+	# Interactables are areas, so they get their own ray that ignores bodies.
+	var area_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
+		origin, origin + direction * click_ray_length, interact_collision_mask)
+	area_query.collide_with_areas = true
+	area_query.collide_with_bodies = false
+	var area_hit: Dictionary = space.intersect_ray(area_query)
+	if not area_hit.is_empty() and area_hit["collider"] is Interactable:
+		var area_position: Vector3 = area_hit["position"]
+		var body_position: Vector3 = hit.get("position", Vector3.INF)
+		if hit.is_empty() or origin.distance_to(area_position) <= origin.distance_to(body_position):
+			EventBus.interactable_clicked.emit(area_hit["collider"])
+			return
+
 	if hit.is_empty():
 		return
 	var collider: Object = hit["collider"]

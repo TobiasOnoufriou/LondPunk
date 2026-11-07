@@ -2,7 +2,7 @@ class_name CombatHUD
 extends CanvasLayer
 ## Combat UI: turn order, party health, ability bar, combat log and result screen.
 ##
-## Driven entirely by EventBus. It only reads state from the units passed in
+## Hidden outside combat. Driven entirely by EventBus. It only reads state from the units passed in
 ## signal payloads, and sends the player's requests back as EventBus signals;
 ## it never commands units directly.
 
@@ -32,6 +32,7 @@ var _order_labels: Dictionary[Combatant, Label] = {}
 var _party_labels: Dictionary[Combatant, Label] = {}
 var _party_bars: Dictionary[Combatant, ProgressBar] = {}
 var _log_lines: PackedStringArray = PackedStringArray()
+var _party_won: bool = false
 
 
 func _ready() -> void:
@@ -52,9 +53,10 @@ func _ready() -> void:
 
     end_turn_button.focus_mode = Control.FOCUS_NONE
     end_turn_button.pressed.connect(EventBus.end_turn_requested.emit)
-    restart_button.pressed.connect(_on_restart_pressed)
+    restart_button.pressed.connect(_on_result_button_pressed)
     bottom_panel.hide()
     result_panel.hide()
+    hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -137,9 +139,31 @@ func _update_party_row(unit: Combatant) -> void:
     _party_bars[unit].value = unit.health.current_hp
 
 
+## Clears everything left over from a previous fight.
+func _reset() -> void:
+    _active = null
+    _armed = null
+    _busy = false
+    _clear_ability_bar()
+    for child: Node in party_list.get_children():
+        child.queue_free()
+    _party_labels.clear()
+    _party_bars.clear()
+    for label: Label in _order_labels.values():
+        label.queue_free()
+    _order_labels.clear()
+    _log_lines.clear()
+    log_label.text = ""
+    round_label.text = ""
+    bottom_panel.hide()
+    result_panel.hide()
+
+
 # --- EventBus handlers ---
 
 func _on_combat_started(combatants: Array[Combatant]) -> void:
+    _reset()
+    show()
     for unit: Combatant in combatants:
         if unit.faction != Combatant.Faction.PARTY:
             continue
@@ -159,7 +183,9 @@ func _on_combat_ended(party_won: bool) -> void:
     _active = null
     _clear_ability_bar()
     bottom_panel.hide()
+    _party_won = party_won
     result_label.text = "VICTORY" if party_won else "DEFEAT"
+    restart_button.text = "Continue" if party_won else "Restart"
     result_panel.show()
 
 
@@ -254,5 +280,10 @@ func _on_ability_button_pressed(ability: Ability) -> void:
     _refresh_buttons()
 
 
-func _on_restart_pressed() -> void:
-    get_tree().reload_current_scene()
+func _on_result_button_pressed() -> void:
+    if not _party_won:
+        get_tree().reload_current_scene()
+        return
+    _reset()
+    hide()
+    EventBus.combat_result_acknowledged.emit(true)

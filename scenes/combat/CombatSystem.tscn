@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/combat_manager.gd" id="1_manager"]
+[ext_resource type="Script" path="res://scripts/combat/player_turn_controller.gd" id="2_player_ctrl"]
+[ext_resource type="Script" path="res://scripts/combat/ai_turn_controller.gd" id="3_ai_ctrl"]
+[ext_resource type="PackedScene" path="res://scenes/combat/MovePreview.tscn" id="4_preview"]
+[ext_resource type="Script" path="res://scripts/combat/damage_popup_spawner.gd" id="5_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/combat/DamagePopup.tscn" id="6_popup"]
+[ext_resource type="PackedScene" path="res://scenes/combat/CombatHUD.tscn" id="7_hud"]
+
+[node name="CombatSystem" type="Node3D"]
+
+[node name="Party" type="Node3D" parent="."]
+
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="CombatManager" type="Node" parent="." node_paths=PackedStringArray("party_root", "enemy_root", "player_controller", "ai_controller")]
+script = ExtResource("1_manager")
+party_root = NodePath("../Party")
+enemy_root = NodePath("../Enemies")
+player_controller = NodePath("PlayerTurnController")
+ai_controller = NodePath("AITurnController")
+
+[node name="PlayerTurnController" type="Node" parent="CombatManager" node_paths=PackedStringArray("combat_manager")]
+script = ExtResource("2_player_ctrl")
+combat_manager = NodePath("..")
+
+[node name="AITurnController" type="Node" parent="CombatManager" node_paths=PackedStringArray("combat_manager")]
+script = ExtResource("3_ai_ctrl")
+combat_manager = NodePath("..")
+
+[node name="MovePreview" parent="." instance=ExtResource("4_preview")]
+
+[node name="DamagePopupSpawner" type="Node3D" parent="."]
+script = ExtResource("5_spawner")
+popup_scene = ExtResource("6_popup")
+
+[node name="CombatHUD" parent="." instance=ExtResource("7_hud")]

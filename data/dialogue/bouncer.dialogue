@@ -1,0 +1,12 @@
+~ start
+Bouncer: Oi. You're not on the list.
+- I'm on every list.
+	Bouncer: Cheeky. Last warning.
+	- Fine, I'm going.
+		Bouncer: Smart choice.
+	- Make me.
+		Bouncer: Your funeral.
+		do start_combat()
+- Sorry, wrong door.
+	Bouncer: Yeah. It is.
+=> END
