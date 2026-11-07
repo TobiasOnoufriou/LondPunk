@@ -10,6 +10,8 @@ extends Node3D
 @export var yaw_pivot: Node3D
 @export var pitch_pivot: Node3D
 @export var follow_target: Node3D
+## Optional. Saves the view (focus, yaw, pitch, zoom, following) with the game.
+@export var state: PersistentState
 
 @export_group("Pan")
 @export var pan_speed: float = 12.0
@@ -50,20 +52,26 @@ var _target_pitch: float = 0.0
 var _target_zoom: float = 0.0
 var _is_drag_rotating: bool = false
 
+const SAVE_KEY: String = "view"
+
 
 func _ready() -> void:
 	_target_yaw = deg_to_rad(default_yaw_deg)
 	_target_pitch = deg_to_rad(default_pitch_deg)
 	_target_zoom = default_zoom
-	if follow_target:
+	_restore_view()
+	if following and follow_target:
 		global_position = _follow_point()
 	_target_position = global_position
 
+	# Snap instead of lerping, so a loaded view doesn't swing into place.
 	yaw_pivot.rotation.y = _target_yaw
 	pitch_pivot.rotation.x = -_target_pitch
 	camera.position = Vector3(0.0, 0.0, _target_zoom)
 
 	EventBus.camera_focus_requested.connect(_on_camera_focus_requested)
+	if state:
+		SaveManager.saving.connect(_on_saving)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -198,3 +206,36 @@ func _try_ground_click(screen_position: Vector2) -> void:
 
 func _on_camera_focus_requested(target: Node3D) -> void:
 	focus_on(target)
+
+
+func _restore_view() -> void:
+	if not state:
+		return
+	var saved: Variant = state.recall(SAVE_KEY)
+	if typeof(saved) != TYPE_DICTIONARY or saved.get("level", "") != _current_level():
+		return
+	_target_yaw = float(saved.get("yaw", _target_yaw))
+	_set_target_pitch(float(saved.get("pitch", _target_pitch)))
+	_target_zoom = clampf(float(saved.get("zoom", _target_zoom)), min_zoom, max_zoom)
+	# The follow target isn't saved; following resumes on the level's follow_target.
+	following = bool(saved.get("following", true))
+	var focus: Variant = saved.get("focus")
+	if not following and focus is Vector3:
+		global_position = focus
+
+
+func _on_saving() -> void:
+	# Targets, not the lerped values, so a mid-transition save lands where it was heading.
+	state.remember(SAVE_KEY, {
+		"level": _current_level(),
+		"focus": _target_position,
+		"yaw": _target_yaw,
+		"pitch": _target_pitch,
+		"zoom": _target_zoom,
+		"following": following,
+	})
+
+
+func _current_level() -> String:
+	var scene: Node = get_tree().current_scene
+	return scene.scene_file_path if scene else ""

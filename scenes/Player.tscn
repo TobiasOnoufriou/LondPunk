@@ -1,6 +1,8 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/persistent_state.gd" id="2_state"]
+[ext_resource type="Script" path="res://scripts/persistent_transform.gd" id="3_transform"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -47,3 +49,11 @@ path_desired_distance = 0.5
 target_desired_distance = 0.25
 path_height_offset = 0.5
 radius = 0.4
+
+[node name="Memory" type="Node" parent="."]
+script = ExtResource("2_state")
+save_id = "player"
+
+[node name="SavedTransform" type="Node" parent="." node_paths=PackedStringArray("state")]
+script = ExtResource("3_transform")
+state = NodePath("../Memory")

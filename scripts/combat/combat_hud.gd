@@ -281,9 +281,7 @@ func _on_ability_button_pressed(ability: Ability) -> void:
 
 
 func _on_result_button_pressed() -> void:
-    if not _party_won:
-        get_tree().reload_current_scene()
-        return
     _reset()
     hide()
-    EventBus.combat_result_acknowledged.emit(true)
+    # On defeat SaveManager rolls back to its pre-fight checkpoint.
+    EventBus.combat_result_acknowledged.emit(_party_won)

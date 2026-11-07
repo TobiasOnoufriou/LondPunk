@@ -6,7 +6,8 @@ extends Node3D
 ## stand, each [EncounterSpawnPoint] child spawns its unit, the exploration
 ## Player steps aside, and [member combat_manager] runs the fight. After a win
 ## the party is cleared away and the Player returns where the lead unit ended up.
-## Runs once; defeat is handled by the HUD reloading the level.
+## Runs once, and [member state] remembers that across saves. Defeat is
+## handled by SaveManager restoring its pre-fight checkpoint.
 
 @export var combat_manager: CombatManager
 @export var combatant_scene: PackedScene
@@ -14,9 +15,15 @@ extends Node3D
 @export var npc_combatants: Array[NPC] = []
 ## The exploration Player to hide during the fight and restore afterwards.
 @export var player: PlayerController
+## Remembers whether this fight has been won. Give it a unique save_id per encounter.
+@export var state: PersistentState
 
 ## True once this encounter has been won.
-var is_completed: bool = false
+var is_completed: bool:
+    get:
+        return state.knows("completed")
+    set(value):
+        state.remember("completed", value)
 
 var _is_running: bool = false
 var _party: Array[Combatant] = []
@@ -31,6 +38,8 @@ func start() -> void:
     if _is_running or is_completed or combat_manager.is_running:
         return
     _is_running = true
+    # Before anyone is hidden, so losing puts everyone back where they stood.
+    SaveManager.checkpoint()
 
     for npc: NPC in npc_combatants:
         if not npc.combat_stats:
@@ -75,6 +84,8 @@ func _on_combat_result_acknowledged(party_won: bool) -> void:
         return
     _is_running = false
     is_completed = true
+    for npc: NPC in npc_combatants:
+        npc.mark_defeated()
 
     if player:
         var lead: Combatant = _lead_unit()

@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/combat/combat_encounter.gd" id="1_encounter"]
 [ext_resource type="PackedScene" path="res://scenes/combat/Combatant.tscn" id="2_combatant"]
+[ext_resource type="Script" path="res://scripts/persistent_state.gd" id="3_state"]
 
-[node name="CombatEncounter" type="Node3D"]
+[node name="CombatEncounter" type="Node3D" node_paths=PackedStringArray("state")]
 script = ExtResource("1_encounter")
 combatant_scene = ExtResource("2_combatant")
+state = NodePath("State")
+
+[node name="State" type="Node" parent="."]
+script = ExtResource("3_state")

@@ -16,5 +16,7 @@ func _ready() -> void:
     combat_manager.start_combat()
 
 
-func _on_combat_result_acknowledged(_party_won: bool) -> void:
-    get_tree().reload_current_scene()
+func _on_combat_result_acknowledged(party_won: bool) -> void:
+    # Defeat is handled by SaveManager restoring its checkpoint.
+    if party_won:
+        get_tree().reload_current_scene()

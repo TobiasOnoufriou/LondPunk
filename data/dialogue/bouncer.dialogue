@@ -1,12 +1,19 @@
 ~ start
-Bouncer: Oi. You're not on the list.
+if knows("met")
+	Bouncer: You again. That's {{recall("times_talked", 0)}} times now.
+else
+	Bouncer: Oi. You're not on the list.
 - I'm on every list.
 	Bouncer: Cheeky. Last warning.
+	do remember("cheeky")
 	- Fine, I'm going.
 		Bouncer: Smart choice.
 	- Make me.
 		Bouncer: Your funeral.
 		do start_combat()
+- Still not on it, then? [if knows("cheeky") /]
+	Bouncer: Don't push it.
 - Sorry, wrong door.
-	Bouncer: Yeah. It is.
+	Bouncer: Yeah. It is. The club's round the back.
+	do SaveManager.set_flag("found_club")
 => END
