@@ -5,16 +5,18 @@
 [ext_resource type="PackedScene" path="res://scenes/CameraRig.tscn" id="3_rig"]
 [ext_resource type="PackedScene" path="res://scenes/MoveMarker.tscn" id="4_marker"]
 [ext_resource type="PackedScene" path="res://scenes/combat/CombatSystem.tscn" id="5_combat"]
-[ext_resource type="PackedScene" path="res://scenes/NPC.tscn" id="6_npc"]
+[ext_resource type="PackedScene" uid="uid://sax3e67kk2j7" path="res://scenes/NPC.tscn" id="6_npc"]
 [ext_resource type="PackedScene" path="res://scenes/combat/CombatEncounter.tscn" id="7_encounter"]
 [ext_resource type="Script" uid="uid://7nsobq5sie45" path="res://scripts/combat/encounter_spawn_point.gd" id="8_spawn"]
-[ext_resource type="Resource" path="res://data/dialogue/bouncer.dialogue" id="9_dialogue"]
-[ext_resource type="Resource" path="res://data/combatants/npc_bouncer.tres" id="10_bouncer"]
+[ext_resource type="Resource" uid="uid://vflyn4ydqy4t" path="res://data/dialogue/bouncer.dialogue" id="9_dialogue"]
+[ext_resource type="Resource" uid="uid://bd8plxyqt14o8" path="res://data/combatants/npc_bouncer.tres" id="10_bouncer"]
 [ext_resource type="Resource" path="res://data/combatants/test_thug.tres" id="11_thug"]
 [ext_resource type="Resource" path="res://data/combatants/party_rook.tres" id="12_rook"]
 [ext_resource type="Resource" path="res://data/combatants/party_wisp.tres" id="13_wisp"]
 [ext_resource type="Resource" uid="uid://yeylpueaehw5" path="res://data/combatants/party_ash.tres" id="14_ash"]
 [ext_resource type="Resource" path="res://data/combatants/party_jinx.tres" id="15_jinx"]
+[ext_resource type="Resource" uid="uid://c23dywjdyow3y" path="res://data/dialogue/Shop.dialogue" id="16_a48kt"]
+[ext_resource type="Material" path="res://data/materials/WallSeeThrough.tres" id="17_wall_see_through"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.05, 0.06, 0.12, 1)
@@ -61,12 +63,13 @@ size = Vector3(2, 2, 2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
 size = Vector3(10, 3, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.3, 0.3, 0.35, 1)
-
 [sub_resource type="BoxMesh" id="BoxMesh_wall"]
-material = SubResource("StandardMaterial3D_wall")
+material = ExtResource("17_wall_see_through")
 size = Vector3(10, 3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shop_wall"]
+material = ExtResource("17_wall_see_through")
+size = Vector3(2, 2, 2)
 
 [node name="TestLevel" type="Node3D" unique_id=1573673494 node_paths=PackedStringArray("nav_region")]
 script = ExtResource("1_level")
@@ -90,6 +93,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_floor")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Floor" unique_id=104143529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0006136894, 0, 0.01900196)
 mesh = SubResource("BoxMesh_floor")
 
 [node name="Crate1" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1631647602]
@@ -137,6 +141,42 @@ shape = SubResource("BoxShape3D_wall")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/WallEast" unique_id=1349981043]
 mesh = SubResource("BoxMesh_wall")
 
+[node name="ShopWall" type="StaticBody3D" parent="NavigationRegion3D" unique_id=2101109580]
+transform = Transform3D(2.8375115, 0, 0, 0, 2.0934715, 0, 0, 0, 0.27578163, -12.975113, 2.1664684, 3.2207994)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShopWall" unique_id=1162104819]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/ShopWall" unique_id=1349107611]
+mesh = SubResource("BoxMesh_shop_wall")
+
+[node name="ShopWall4" type="StaticBody3D" parent="NavigationRegion3D" unique_id=670738511]
+transform = Transform3D(3.4672492, 0, 0, 0, -2.0159773e-07, -0.27578157, 0, 4.612018, -1.2054795e-08, -12.279053, 4.1986313, -1.0671453)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShopWall4" unique_id=1143700377]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/ShopWall4" unique_id=2092796077]
+mesh = SubResource("BoxMesh_shop_wall")
+
+[node name="ShopWall3" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1519055534]
+transform = Transform3D(2.8375115, 0, 0, 0, 2.0934715, 0, 0, 0, 0.27578163, -12.975113, 2.1664684, -5.40283)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShopWall3" unique_id=1138318472]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/ShopWall3" unique_id=1812194830]
+mesh = SubResource("BoxMesh_shop_wall")
+
+[node name="ShopWall2" type="StaticBody3D" parent="NavigationRegion3D" unique_id=148879578]
+transform = Transform3D(-1.996467e-07, 0, 0.2757816, 0, 2.0934713, 0, -4.5673842, 0, -1.2054796e-08, -15.540035, 2.1664684, -1.1008654)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShopWall2" unique_id=1613336609]
+shape = SubResource("BoxShape3D_crate")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/ShopWall2" unique_id=2063640078]
+mesh = SubResource("BoxMesh_shop_wall")
+
 [node name="Player" parent="." unique_id=769089039 instance=ExtResource("2_player")]
 
 [node name="CameraRig" parent="." unique_id=1162433114 node_paths=PackedStringArray("follow_target") instance=ExtResource("3_rig")]
@@ -154,16 +194,10 @@ combat_stats = ExtResource("10_bouncer")
 encounter = NodePath("../BouncerEncounter")
 body_color = Color(0.35, 0.3, 0.3, 1)
 
-[node name="Memory" parent="Bouncer"]
-save_id = "bouncer"
-
 [node name="BouncerEncounter" parent="." unique_id=1003340480 node_paths=PackedStringArray("combat_manager", "npc_combatants", "player") instance=ExtResource("7_encounter")]
 combat_manager = NodePath("../CombatSystem/CombatManager")
 npc_combatants = [NodePath("../Bouncer")]
 player = NodePath("../Player")
-
-[node name="State" parent="BouncerEncounter"]
-save_id = "bouncer_encounter"
 
 [node name="Rook" type="Marker3D" parent="BouncerEncounter" unique_id=622944771]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 0, 2)
@@ -192,4 +226,8 @@ stats = ExtResource("11_thug")
 faction = 1
 display_name_override = "Bouncer's Mate"
 
-[node name="Shop" type="Node3D" parent="." unique_id=246879882]
+[node name="NPC" parent="." unique_id=108067451 instance=ExtResource("6_npc")]
+transform = Transform3D(-0.005508017, 0, -0.999985, 0, 1, 0, 0.999985, 0, -0.005508017, -12.952033, 0, 0.025643826)
+display_name = "Winston"
+dialogue = ExtResource("16_a48kt")
+body_color = Color(0.94963413, 0.3262548, 0.71763897, 1)

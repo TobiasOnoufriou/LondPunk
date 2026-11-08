@@ -33,7 +33,7 @@ outer_radius = 0.68
 rings = 32
 ring_segments = 8
 
-[node name="Combatant" type="CharacterBody3D" node_paths=PackedStringArray("health", "action_points", "collision_shape", "visual", "body_mesh", "selection_ring", "info_label")]
+[node name="Combatant" type="CharacterBody3D" node_paths=PackedStringArray("health", "action_points", "collision_shape", "visual", "body_mesh", "selection_ring", "info_label") groups=["see_through_target"]]
 collision_layer = 4
 collision_mask = 1
 script = ExtResource("1_combatant")

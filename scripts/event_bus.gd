@@ -21,6 +21,17 @@ signal combatant_clicked(combatant: Combatant)
 signal interactable_clicked(interactable: Interactable)
 
 
+# --- View ---
+
+## Turns the see-through walls effect (occlusion cutout and near-camera fade) on or off.
+@warning_ignore("unused_signal")
+signal see_through_toggled(enabled: bool)
+
+## Replaces the active see-through walls tuning, e.g. from an options menu.
+@warning_ignore("unused_signal")
+signal see_through_settings_changed(settings: SeeThroughSettings)
+
+
 # --- Dialogue ---
 
 ## Emitted when a conversation with [param speaker] opens. Exploration input should pause.

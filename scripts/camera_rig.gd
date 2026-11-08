@@ -179,7 +179,8 @@ func _try_ground_click(screen_position: Vector2) -> void:
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		origin, origin + direction * click_ray_length, click_collision_mask)
-	var hit: Dictionary = space.intersect_ray(query)
+	# Looks through walls where they are cut away, so clicks reach what is visible.
+	var hit: Dictionary = SeeThroughController.intersect_ray(camera, screen_position, query)
 
 	# Interactables are areas, so they get their own ray that ignores bodies.
 	var area_query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(

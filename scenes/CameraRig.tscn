@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/camera_rig.gd" id="1_rig"]
 [ext_resource type="Script" path="res://scripts/persistent_state.gd" id="2_state"]
+[ext_resource type="Script" path="res://scripts/see_through_controller.gd" id="3_see_through"]
+[ext_resource type="Resource" path="res://data/see_through_default.tres" id="4_see_through_settings"]
 
 [node name="CameraRig" type="Node3D" node_paths=PackedStringArray("camera", "yaw_pivot", "pitch_pivot", "state")]
 script = ExtResource("1_rig")
@@ -23,3 +25,8 @@ far = 500.0
 [node name="State" type="Node" parent="."]
 script = ExtResource("2_state")
 save_id = "camera"
+
+[node name="SeeThrough" type="Node" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("3_see_through")
+camera = NodePath("../Yaw/Pitch/Camera3D")
+settings = ExtResource("4_see_through_settings")
